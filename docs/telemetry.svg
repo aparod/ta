@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="561px" preserveAspectRatio="none" style="width:520px;height:561px;background:#FFFFFF;" version="1.1" viewBox="0 0 520 561" width="520px" zoomAndPan="magnify"><defs/><g><!--MD5=[b5e8a908e37e589ff1353aa5fb99b9b0]
+entity ts--><g id="elem_ts"><rect fill="#F1F1F1" height="62.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="185" x="120" y="7"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="285" y="12"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="283" y="14"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="283" y="18"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="145" x="135" y="40.5352">Telemetry Supervisor</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="83" x="135" y="57.0234">(Supervisor)</text></g><!--MD5=[71e85884706d324765c70f5e7cb006af]
+entity fsw--><g id="elem_fsw"><rect fill="#F1F1F1" height="62.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="175" x="7" y="129.97"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="162" y="134.97"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="160" y="136.97"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="160" y="140.97"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="135" x="22" y="163.5052">File System Watcher</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80" x="22" y="179.9934">(GenServer)</text></g><!--MD5=[6de611e34682f669701aef2da7d6fd87]
+entity ds1--><g id="elem_ds1"><rect fill="#F1F1F1" height="62.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="229" x="217" y="129.97"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="426" y="134.97"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="424" y="136.97"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="424" y="140.97"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="189" x="232" y="163.5052">Dynamic Parsers Supervisor</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="145" x="232" y="179.9934">(Dynamic Supervisor)</text></g><!--MD5=[83758e194188d1e0ea87206d901586b4]
+entity fpsa--><g id="elem_fpsa"><rect fill="#F1F1F1" height="62.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="123" x="209" y="252.95"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="312" y="257.95"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="310" y="259.95"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="310" y="263.95"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="71" x="224" y="286.4852">File Parser</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="83" x="224" y="302.9734">(Supervisor)</text></g><!--MD5=[f4ec3e9349b7c66dafdeab35509c80a2]
+entity fpsc--><g id="elem_fpsc"><rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="52" x="366.5" y="261.19"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="398.5" y="266.19"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="396.5" y="268.19"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="396.5" y="272.19"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="12" x="381.5" y="294.7252">...</text></g><!--MD5=[c326229a2ffeb98b28a0dba81c32a3dd]
+entity fr--><g id="elem_fr"><rect fill="#F1F1F1" height="62.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="120" x="39.5" y="375.93"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="139.5" y="380.93"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="137.5" y="382.93"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="137.5" y="386.93"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76" x="54.5" y="409.4652">File Reader</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80" x="54.5" y="425.9534">(GenServer)</text></g><!--MD5=[51378f337f32c7af217b28459f2bcd3f]
+entity dn--><g id="elem_dn"><rect fill="#F1F1F1" height="62.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="151" x="195" y="375.93"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="326" y="380.93"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="324" y="382.93"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="324" y="386.93"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111" x="210" y="409.4652">Data Normalizer</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80" x="210" y="425.9534">(GenServer)</text></g><!--MD5=[2f0b3a19d94712a02025d561beb8fc0c]
+entity dp--><g id="elem_dp"><rect fill="#F1F1F1" height="62.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="134" x="380.5" y="375.93"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="494.5" y="380.93"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="492.5" y="382.93"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="492.5" y="386.93"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="94" x="395.5" y="409.4652">Data Persister</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80" x="395.5" y="425.9534">(GenServer)</text></g><!--MD5=[7468467f3b6b392f1d176d828c753b77]
+entity db--><g id="elem_db"><path d="M406,508.9 C406,498.9 447.5,498.9 447.5,498.9 C447.5,498.9 489,498.9 489,508.9 L489,534.3883 C489,544.3883 447.5,544.3883 447.5,544.3883 C447.5,544.3883 406,544.3883 406,534.3883 L406,508.9 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><path d="M406,508.9 C406,518.9 447.5,518.9 447.5,518.9 C447.5,518.9 489,518.9 489,508.9 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="416" y="536.4352">Database</text></g><!--MD5=[1ae91a1d5af0354f5294edd2e4281b1d]
+link ts to fsw--><g id="link_ts_fsw"><path d="M182.42,70.32 C166.05,87.1 145.74,107.93 128.77,125.33 " fill="none" id="ts-to-fsw" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="125.58,128.59,134.729,124.9435,129.0725,125.012,129.0041,119.3555,125.58,128.59" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[adf26498fbb2e62399aede0aa7510dc0]
+link ts to ds1--><g id="link_ts_ds1"><path d="M242.84,70.32 C259.34,87.1 279.82,107.93 296.94,125.33 " fill="none" id="ts-to-ds1" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="300.16,128.6,296.7175,119.3724,296.6604,125.0289,291.0038,124.9718,300.16,128.6" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[e96bea178fd4cef3107fc93dfd954ecc]
+link ds1 to fpsa--><g id="link_ds1_fpsa"><path d="M315.95,193.3 C307.7,209.65 297.52,229.85 288.89,246.97 " fill="none" id="ds1-to-fpsa" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="286.7,251.3,294.3106,245.0487,288.9418,246.8307,287.1598,241.4619,286.7,251.3" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[d8c85275c18dd31ae450a9fb259a57ff]
+link ds1 to fpsc--><g id="link_ds1_fpsc"><path d="M347.05,193.3 C356.71,212.46 369.03,236.89 378.41,255.48 " fill="none" id="ds1-to-fpsc" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="380.53,259.7,380.0325,249.8637,378.2711,255.2394,372.8954,253.478,380.53,259.7" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[510ec5509f1e9c2d02fc70412e523e54]
+link fpsa to fr--><g id="link_fpsa_fr"><path d="M226.91,316.28 C202.89,333.27 173.01,354.41 148.22,371.94 " fill="none" id="fpsa-to-fr" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="144.25,374.76,153.9089,372.8351,148.334,371.8755,149.2937,366.3006,144.25,374.76" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[7e222a6743d0d72b3544572f57fcfa41]
+link fpsa to dn--><g id="link_fpsa_dn"><path d="M270.5,316.28 C270.5,332.49 270.5,352.47 270.5,369.5 " fill="none" id="fpsa-to-dn" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="270.5,374.12,274.5,365.12,270.5,369.12,266.5,365.12,270.5,374.12" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[c30983d98a2768a60c3fc7c8dd1ee2a3]
+link fpsa to dp--><g id="link_fpsa_dp"><path d="M315.62,316.28 C340.59,333.34 371.67,354.59 397.39,372.16 " fill="none" id="fpsa-to-dp" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="401.21,374.78,396.0462,366.3934,397.0852,371.954,391.5246,372.9931,401.21,374.78" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[792dd6f94d25ea5c0d9ffd900935d811]
+link fr to dn--><g id="link_fr_dn"><path d="M159.95,407.41 C169.52,407.41 179.08,407.41 188.64,407.41 " fill="none" id="fr-to-dn" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="193.42,407.41,184.42,403.41,188.42,407.41,184.42,411.41,193.42,407.41" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[3df422ecf43d056aa79134355bd3e7a1]
+link dn to dp--><g id="link_dn_dp"><path d="M346.21,407.41 C355.42,407.41 364.64,407.41 373.86,407.41 " fill="none" id="dn-to-dp" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="378.72,407.41,369.72,403.41,373.72,407.41,369.72,411.41,378.72,407.41" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[807b0644e00316551570db79c5399cd3]
+link dp to db--><g id="link_dp_db"><path d="M447.5,439.38 C447.5,455.99 447.5,476.31 447.5,492.47 " fill="none" id="dp-to-db" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="447.5,497.16,451.5,488.16,447.5,492.16,443.5,488.16,447.5,497.16" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[8901389d2db982a9786e3cb0d085d6ef]
+@startuml telemetry
+
+component "Telemetry Supervisor\n(Supervisor)" as ts
+component "File System Watcher\n(GenServer)" as fsw
+component "Dynamic Parsers Supervisor\n(Dynamic Supervisor)" as ds1
+
+component "File Parser\n(Supervisor)" as fpsa
+component "..." as fpsc
+
+component "File Reader\n(GenServer)" as fr
+component "Data Normalizer\n(GenServer)" as dn
+component "Data Persister\n(GenServer)" as dp
+
+database "Database" as db
+
+ts -down-> fsw
+ts -down-> ds1
+
+ds1 -down-> fpsa
+ds1 -down-> fpsc
+
+fpsa -down-> fr
+fpsa -down-> dn
+fpsa -down-> dp
+
+fr -right-> dn
+dn -right-> dp
+dp -down-> db
+
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 12:01:30 CDT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

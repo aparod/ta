@@ -1,0 +1,30 @@
+@startuml telemetry
+
+component "Telemetry Supervisor\n(Supervisor)" as ts
+component "File System Watcher\n(GenServer)" as fsw
+component "Dynamic Parsers Supervisor\n(Dynamic Supervisor)" as ds1
+
+component "File Parser\n(Supervisor)" as fpsa
+component "..." as fpsc
+
+component "File Reader\n(GenServer)" as fr
+component "Data Normalizer\n(GenServer)" as dn
+component "Data Persister\n(GenServer)" as dp
+
+database "Database" as db
+
+ts -down-> fsw
+ts -down-> ds1
+
+ds1 -down-> fpsa
+ds1 -down-> fpsc
+
+fpsa -down-> fr
+fpsa -down-> dn
+fpsa -down-> dp
+
+fr -right-> dn
+dn -right-> dp
+dp -down-> db
+
+@enduml
