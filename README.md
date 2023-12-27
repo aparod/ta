@@ -35,9 +35,10 @@ There's not a lot of code, but the most interesting files are probably:
 * `lib/true_anomaly/telemetry/telemetry.ex`
 * `lib/true_anomaly/instruments/*.ex`
 * `lib/true_anomaly/data_normalizer.ex`
+* `lib/true_anomaly/data_persister.ex`
 
 ## Running the system
 
-If you wish to see the system run, it is functional and nothing beyond the standard Elixir/Phoenix setup steps is necessary.
+If you wish to see the system run, it is functional and nothing beyond the standard Elixir/Phoenix setup steps is required.
 
 Once the app is running, simply copy one (or both!) of the files from the `/files` directory into the `/files/ingest` directory. The workers will see them and begin processing.
