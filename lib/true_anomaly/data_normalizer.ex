@@ -1,10 +1,6 @@
 defmodule TrueAnomaly.DataNormalizer do
   use GenServer
 
-  require Logger
-
-  alias TrueAnomaly.Telemetry.Telemetry
-
   def start_link(%TrueAnomaly.Files.File{} = file) do
     name = :"DataNormalizer#{file.id}"
 
@@ -12,9 +8,7 @@ defmodule TrueAnomaly.DataNormalizer do
   end
 
   def init(%TrueAnomaly.Files.File{} = file) do
-    state = %{
-      file: file
-    }
+    state = %{file: file}
 
     {:ok, state, {:continue, :set_timer}}
   end
@@ -28,30 +22,20 @@ defmodule TrueAnomaly.DataNormalizer do
   def handle_info(:process_chunk, state) do
     {satellite_type, lines} = GenServer.call(:"FileReader#{state.file.id}", :get_chunk)
 
-    changesets =
-      Enum.reduce(lines, [], fn {line_num, _, line}, acc ->
-        json =
+    normalized_records =
+      Enum.map(lines, fn {line_num, _, line} ->
+        record =
           line
           |> Jason.decode!(keys: :atoms)
           |> normalize_data(satellite_type)
           |> Map.put(:file_id, state.file.id)
 
-        changeset = Telemetry.changeset(json)
-
-        if changeset.valid? do
-          [changeset | acc]
-        else
-          error =
-            "[DataNormalization] File #{state.file.id} failed " <>
-              "validation on line #{line_num}: #{inspect(changeset.errors)}."
-
-          Logger.warning(error)
-
-          acc
-        end
+        {line_num, record}
       end)
 
-    GenServer.cast(:"DataPersister#{state.file.id}", {:enqueue_records, changesets})
+    if !Enum.empty?(normalized_records) do
+      GenServer.cast(:"DataPersister#{state.file.id}", {:enqueue_records, normalized_records})
+    end
 
     {:noreply, state, {:continue, :set_timer}}
   end

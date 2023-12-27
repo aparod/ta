@@ -1,7 +1,10 @@
 defmodule TrueAnomaly.DataPersister do
   use GenServer
 
+  require Logger
+
   alias TrueAnomaly.Repo
+  alias TrueAnomaly.Telemetry.Telemetry
 
   def start_link(%TrueAnomaly.Files.File{} = file) do
     name = :"DataPersister#{file.id}"
@@ -28,11 +31,21 @@ defmodule TrueAnomaly.DataPersister do
     # Persist up to 25 records at a time
     records = Enum.slice(state.records, 0..24)
 
-    Enum.each(records, fn record ->
-      Repo.insert(record)
+    Enum.each(records, fn {line_num, record} ->
+      changeset = Telemetry.changeset(record)
+
+      if changeset.valid? do
+        Repo.insert(changeset)
+      else
+        error =
+          "[DataPersister] File #{state.file.id} failed " <>
+            "validation on line #{line_num}: #{inspect(changeset.errors)}."
+
+        Logger.warning(error)
+      end
     end)
 
-    new_state = %{state | records: Enum.drop(state.records, 25)}
+    new_state = %{state | records: Enum.drop(state.records, length(records))}
 
     {:noreply, new_state, {:continue, :set_timer}}
   end
