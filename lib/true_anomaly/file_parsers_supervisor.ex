@@ -18,6 +18,21 @@ defmodule TrueAnomaly.FileParsersSupervisor do
   end
 
   def add_file_parser(%File{} = file) do
-    {:ok, _pid} = DynamicSupervisor.start_child(__MODULE__, {FileParserSupervisor, file})
+    name = name_for(:file_parsers_supervisor)
+
+    DynamicSupervisor.start_child(name, {FileParserSupervisor, file})
+  end
+
+  def remove_file_parser(%File{} = file) do
+    registry_name = name_for(:registry)
+    file_parser_supervisor = name_for(:file_parser_supervisor, file)
+
+    case Registry.lookup(registry_name, file_parser_supervisor) do
+      [{pid, _}] ->
+        DynamicSupervisor.terminate_child(name_for(:file_parsers_supervisor), pid)
+
+      _ ->
+        :ok
+    end
   end
 end
