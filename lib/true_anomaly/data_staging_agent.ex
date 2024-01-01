@@ -74,8 +74,8 @@ defmodule TrueAnomaly.DataStagingAgent do
     Agent.get(name, fn state ->
       %{
         total_lines: length(state),
-        imported_lines: Enum.count(state, & (elem(&1, 1) == :persisted)),
-        errors: Enum.count(state, & (elem(&1, 1) == :error))
+        imported_lines: Enum.count(state, &(elem(&1, 1) == :persisted)),
+        errors: Enum.count(state, &(elem(&1, 1) == :error))
       }
     end)
   end

@@ -6,16 +6,15 @@ defmodule TrueAnomaly.Files.File do
   alias __MODULE__
 
   @type t :: %__MODULE__{
-    id: integer,
-    name:  String.t(),
-    status: String.t(),
-    total_lines: integer(),
-    imported_lines: integer(),
-    errors: integer(),
-
-    inserted_at: NaiveDateTime.t(),
-    updated_at: NaiveDateTime.t()
-  }
+          id: integer,
+          name: String.t(),
+          status: String.t(),
+          total_lines: integer(),
+          imported_lines: integer(),
+          errors: integer(),
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
+        }
 
   schema "files" do
     field :name, :string
