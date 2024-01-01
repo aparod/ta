@@ -5,6 +5,8 @@ defmodule TrueAnomaly.DataPersister do
 
   require Logger
 
+  alias TrueAnomaly.DataStagingAgent
+  alias TrueAnomaly.FileParsersSupervisor
   alias TrueAnomaly.Repo
   alias TrueAnomaly.Telemetry.Telemetry
 
@@ -15,46 +17,77 @@ defmodule TrueAnomaly.DataPersister do
   end
 
   def init(%TrueAnomaly.Files.File{} = file) do
-    state = %{
-      file: file,
-      records: []
-    }
+    state = %{file: file}
 
-    {:ok, state, {:continue, :set_timer}}
+    {:ok, state}
+  end
+
+  def handle_cast(:start, state) do
+    {:noreply, state, {:continue, :set_timer}}
   end
 
   def handle_continue(:set_timer, state) do
-    Process.send_after(self(), :persist_records, 3_000)
+    Process.send_after(self(), :persist_records, 1_000)
 
     {:noreply, state}
   end
 
   def handle_info(:persist_records, state) do
-    # Persist up to 25 records at a time
-    records = Enum.slice(state.records, 0..24)
+    DataStagingAgent.get_chunk(state.file)
+    |> persist_records(state)
+  end
 
-    Enum.each(records, fn {line_num, record} ->
+  defp persist_records(records, state) when length(records) > 0 do
+    Enum.map(records, fn {line_num, _, record} ->
       changeset = Telemetry.changeset(record)
 
       if changeset.valid? do
         Repo.insert(changeset)
+
+        {line_num, :persisted, record}
       else
         error =
           "[DataPersister] File #{state.file.id} failed " <>
             "validation on line #{line_num}: #{inspect(changeset.errors)}."
 
         Logger.warning(error)
+
+        {line_num, :error, record}
       end
     end)
+    |> then(fn lines ->
+      # Update the Agent with the results
+      DataStagingAgent.update_line_statuses(state.file, lines)
+    end)
 
-    new_state = %{state | records: Enum.drop(state.records, length(records))}
-
-    {:noreply, new_state, {:continue, :set_timer}}
+    {:noreply, state, {:continue, :set_timer}}
   end
 
-  def handle_cast({:enqueue_records, records}, state) do
-    new_records = state.records ++ records
+  defp persist_records([], state) do
+    Logger.info("[DataPersister] File #{state.file.id} processing complete.")
 
-    {:noreply, %{state | records: new_records}}
+    # Update the file record with relevant statistics
+    attrs =
+      DataStagingAgent.get_stats(state.file)
+      |> Map.put(:status, :complete)
+
+    TrueAnomaly.Files.update(state.file, attrs)
+
+    # Delete the file from the ingest folder
+    File.rm!(state.file.name)
+
+    # Terminate all processes for this file now that the import is complete
+    FileParsersSupervisor.remove_file_parser(state.file)
+
+    {:noreply, state}
+  end
+
+  ### Client functions ###
+
+  @spec start(TrueAnomaly.Files.File.t()) :: :ok
+  def start(%TrueAnomaly.Files.File{} = file) do
+    name = via_registry(:data_persister, file)
+
+    GenServer.cast(name, :start)
   end
 end

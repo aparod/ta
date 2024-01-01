@@ -3,6 +3,12 @@ defmodule TrueAnomaly.FileReader do
 
   import TrueAnomaly.Utils.RegistryUtils
 
+  require Logger
+
+  alias TrueAnomaly.DataPersister
+  alias TrueAnomaly.DataStagingAgent
+  alias TrueAnomaly.Normalizer
+
   @chunk_size 50
 
   def start_link(%TrueAnomaly.Files.File{} = file) do
@@ -15,15 +21,14 @@ defmodule TrueAnomaly.FileReader do
     state = %{
       file: file,
       file_stream: nil,
-      satellite_type: nil,
-      lines: []
+      satellite_type: nil
     }
 
-    {:ok, state, {:continue, :get_satellite_type}}
+    {:ok, state, {:continue, :process_header}}
   end
 
-  def handle_continue(:get_satellite_type, state) do
-    fs = File.stream!(state[:file].name)
+  def handle_continue(:process_header, state) do
+    fs = File.stream!(state.file.name)
 
     header = Stream.take(fs, 1) |> Enum.at(0) |> Jason.decode!()
     satellite_type = header["satellite_type"] |> String.to_atom()
@@ -33,13 +38,18 @@ defmodule TrueAnomaly.FileReader do
   end
 
   def handle_continue(:read_lines, state) do
-    lines =
-      state.file_stream
-      |> Stream.drop(1)
-      |> Enum.with_index()
-      |> Enum.map(fn {line, idx} -> {idx + 1, nil, line} end)
+    state.file_stream
+    |> Stream.drop(1)
+    |> Stream.with_index(1)
+    |> Stream.chunk_every(@chunk_size)
+    |> Enum.map(&normalize_and_stage_data(&1, state))
+    |> Task.await_many()
 
-    state = %{state | lines: lines}
+    # Sort the rows in the agent now that all the data has been staged
+    DataStagingAgent.sort_data(state.file)
+
+    # Inform the data persister to begin processing records
+    DataPersister.start(state.file)
 
     {:noreply, state}
   end
@@ -48,35 +58,24 @@ defmodule TrueAnomaly.FileReader do
     {:reply, state, state}
   end
 
-  def handle_call(:get_chunk, _from, state) do
-    start_index =
-      Enum.find_index(state.lines, fn {_, status, _} -> status == nil end)
-
-    if start_index == nil do
-      {:reply, {state.satellite_type, []}, state}
-    else
-      end_index = start_index + @chunk_size - 1
-
-      # Grab the lines for processing
-      chunk =
-        state.lines
-        |> Enum.slice(start_index..end_index)
-
-      # Update the status of the lines in the state
-      head =
-        if start_index > 0 do
-          Enum.slice(state.lines, 0..(start_index - 1))
+  defp normalize_and_stage_data(chunk, state) do
+    # Each chunk is processed asynchronously
+    Task.async(fn ->
+      Enum.map(chunk, fn {line, idx} ->
+        with {:ok, json} <- Jason.decode(line, keys: :atoms),
+             {:ok, map} <- Normalizer.normalize(json, state.satellite_type) do
+          {idx, :normalized, map}
         else
-          []
+          {:error, reason} ->
+            Logger.warning(
+              "[FileReader] Error in file #{state.file.id} on line #{idx}: #{inspect(reason)}."
+            )
+
+            {idx, :error, inspect(reason)}
         end
-
-      middle =
-        Enum.map(chunk, fn {line_num, _, line} -> {line_num, :processsing, line} end)
-
-      tail = Enum.slice(state.lines, (end_index + 1)..-1//1)
-
-      {:reply, {state.satellite_type, chunk}, %{state | lines: head ++ middle ++ tail}}
-    end
+      end)
+      |> then(fn lines -> DataStagingAgent.append_data(state.file, lines) end)
+    end)
   end
 
   ### Client functions ###
@@ -85,11 +84,5 @@ defmodule TrueAnomaly.FileReader do
     name = name_for(:file_reader, file)
 
     GenServer.call(name, :get_state)
-  end
-
-  def get_chunk(%TrueAnomaly.Files.File{} = file) do
-    name = :"FileReader#{file.id}"
-
-    GenServer.call(name, :get_chunk)
   end
 end

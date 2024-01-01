@@ -7,9 +7,15 @@ defmodule TrueAnomaly.Files do
   end
 
   def create(attrs \\ %{}) do
-    %File{status: :processing, result: nil}
+    %File{status: :processing}
     |> File.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def update(%File{} = file, attrs \\ %{}) do
+    file
+    |> File.changeset(attrs)
+    |> Repo.update()
   end
 
   def get_by_name(filename) do
