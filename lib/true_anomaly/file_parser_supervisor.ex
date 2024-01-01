@@ -14,8 +14,8 @@ defmodule TrueAnomaly.FileParserSupervisor do
   @impl true
   def init(%File{} = file) do
     children = [
+      {TrueAnomaly.DataStagingAgent, file},
       {TrueAnomaly.FileReader, file},
-      {TrueAnomaly.DataNormalizer, file},
       {TrueAnomaly.DataPersister, file}
     ]
 
