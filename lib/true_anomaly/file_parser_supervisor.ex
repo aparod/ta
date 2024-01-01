@@ -1,10 +1,12 @@
 defmodule TrueAnomaly.FileParserSupervisor do
   use Supervisor
 
+  import TrueAnomaly.Utils.RegistryUtils
+
   alias TrueAnomaly.Files.File
 
   def start_link(%File{} = file) do
-    name = :"FileParserSupervisor#{file.id}"
+    name = via_registry(:file_parser_supervisor, file)
 
     Supervisor.start_link(__MODULE__, file, name: name)
   end

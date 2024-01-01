@@ -1,13 +1,15 @@
 defmodule TrueAnomaly.DataPersister do
   use GenServer
 
+  import TrueAnomaly.Utils.RegistryUtils
+
   require Logger
 
   alias TrueAnomaly.Repo
   alias TrueAnomaly.Telemetry.Telemetry
 
   def start_link(%TrueAnomaly.Files.File{} = file) do
-    name = :"DataPersister#{file.id}"
+    name = via_registry(:data_persister, file)
 
     GenServer.start_link(__MODULE__, file, name: name)
   end

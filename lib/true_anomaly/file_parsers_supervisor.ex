@@ -1,11 +1,15 @@
 defmodule TrueAnomaly.FileParsersSupervisor do
   use DynamicSupervisor
 
+  import TrueAnomaly.Utils.RegistryUtils
+
   alias TrueAnomaly.FileParserSupervisor
   alias TrueAnomaly.Files.File
 
   def start_link(init_arg) do
-    DynamicSupervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+    name = name_for(:file_parsers_supervisor)
+
+    DynamicSupervisor.start_link(__MODULE__, init_arg, name: name)
   end
 
   @impl true

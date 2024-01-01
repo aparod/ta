@@ -1,10 +1,12 @@
 defmodule TrueAnomaly.FileReader do
   use GenServer
 
+  import TrueAnomaly.Utils.RegistryUtils
+
   @chunk_size 50
 
   def start_link(%TrueAnomaly.Files.File{} = file) do
-    name = :"FileReader#{file.id}"
+    name = via_registry(:file_reader, file)
 
     GenServer.start_link(__MODULE__, file, name: name)
   end
@@ -80,7 +82,7 @@ defmodule TrueAnomaly.FileReader do
   ### Client functions ###
 
   def get_state(%TrueAnomaly.Files.File{} = file) do
-    name = :"FileReader#{file.id}"
+    name = name_for(:file_reader, file)
 
     GenServer.call(name, :get_state)
   end

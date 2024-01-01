@@ -3,12 +3,16 @@ defmodule TrueAnomaly.FileSystemWatcher do
 
   require Logger
 
+  import TrueAnomaly.Utils.RegistryUtils
+
   alias TrueAnomaly.Files
 
   @files_dir Path.relative("files/ingest")
 
   def start_link(_default) do
-    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+    name = name_for(:file_system_watcher)
+
+    GenServer.start_link(__MODULE__, nil, name: name)
   end
 
   def init(_init_arg) do
