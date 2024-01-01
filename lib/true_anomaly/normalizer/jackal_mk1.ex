@@ -11,8 +11,8 @@ defmodule TrueAnomaly.Normalizer.JackalMk1 do
 
       instruments = %{
         __type__: :jackal_mk1,
-        instrument1: json.instrument1,
-        instrument2: json.instrument2
+        instrument1: Map.get(json, :instrument1),
+        instrument2: Map.get(json, :instrument2)
       }
 
       {:ok, Map.put(attrs, :instruments, instruments)}

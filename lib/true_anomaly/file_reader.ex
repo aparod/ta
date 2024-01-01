@@ -67,7 +67,7 @@ defmodule TrueAnomaly.FileReader do
           {idx, :normalized, map}
         else
           {:error, reason} ->
-            Logger.warning(
+            Logger.error(
               "[FileReader] Error in file #{state.file.id} on line #{idx}: #{inspect(reason)}."
             )
 

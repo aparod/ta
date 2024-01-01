@@ -29,5 +29,6 @@ defmodule TrueAnomaly.Files.File do
   def changeset(%File{} = file, %{} = attrs) do
     file
     |> cast(attrs, [:name, :status, :total_lines, :imported_lines, :errors])
+    |> validate_required([:name, :status])
   end
 end
