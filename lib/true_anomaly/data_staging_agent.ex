@@ -33,7 +33,7 @@ defmodule TrueAnomaly.DataStagingAgent do
       end)
       |> then(fn chunk ->
         # Update the Agent's state to record the statuses of the lines that
-        # have been handed off for processing
+        # are being handed off for processing
         new_state =
           Enum.reduce(chunk, state, fn {line_num, _, _} = row, acc ->
             List.update_at(acc, line_num - 1, fn _ -> row end)
@@ -53,6 +53,30 @@ defmodule TrueAnomaly.DataStagingAgent do
 
     Agent.cast(name, fn state ->
       Enum.sort(state, &(elem(&1, 0) <= elem(&2, 0)))
+    end)
+  end
+
+  @spec update_line_statuses(File.t(), list(tuple())) :: :ok
+  def update_line_statuses(%File{} = file, lines) when is_list(lines) do
+    name = via_registry(:data_staging_agent, file)
+
+    Agent.cast(name, fn state ->
+      Enum.reduce(lines, state, fn {line_num, _, _} = row, acc ->
+        List.update_at(acc, line_num - 1, fn _ -> row end)
+      end)
+    end)
+  end
+
+  @spec get_stats(File.t()) :: map()
+  def get_stats(%File{} = file) do
+    name = via_registry(:data_staging_agent, file)
+
+    Agent.get(name, fn state ->
+      %{
+        total_lines: length(state),
+        imported_lines: Enum.count(state, & (elem(&1, 1) == :persisted)),
+        errors: Enum.count(state, & (elem(&1, 1) == :error))
+      }
     end)
   end
 
