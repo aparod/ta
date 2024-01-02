@@ -34,6 +34,11 @@ I hope that the design of this system demonstrates my knowledge of Supervisors, 
 
 ## Running the system
 
-If you wish to see the system run, it is functional and requires nothing beyond the standard Elixir/Phoenix setup steps.
+If you wish to see the system run, it is functional and requires nothing beyond the standard Elixir/Phoenix setup steps:
 
-Once the app is running (via `iex -S mix`), simply copy one (or both!) of the files from the `/files` directory into the `/files/ingest` directory. The **File System Watcher** will see them and kick off processing of the files.
+```
+$ mix setup
+$ iex -S mix
+```
+
+Once the app is running, simply copy one (or both!) of the files from the `/files` directory into the `/files/ingest` directory. The **File System Watcher** will see them and kick off processing of the files.
