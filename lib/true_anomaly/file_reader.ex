@@ -75,7 +75,7 @@ defmodule TrueAnomaly.FileReader do
         else
           {:error, reason} ->
             Logger.error(
-              "[FileReader] Error in file #{state.file.id} on line #{idx}: #{inspect(reason)}."
+              "[FileReader] Error in file #{state.file.id} on line #{idx + 1}: #{inspect(reason)}."
             )
 
             {idx, :error, inspect(reason)}

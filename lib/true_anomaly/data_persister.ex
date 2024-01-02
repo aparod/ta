@@ -60,7 +60,7 @@ defmodule TrueAnomaly.DataPersister do
         errors = PolymorphicEmbed.traverse_errors(changeset, & &1)
         error =
           "[DataPersister] File #{state.file.id} failed " <>
-            "validation on line #{line_num}: #{inspect(errors)}."
+            "validation on line #{line_num + 1}: #{inspect(errors)}."
 
         Logger.error(error)
 
