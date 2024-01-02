@@ -1,4 +1,9 @@
 defmodule TrueAnomaly.FileParserSupervisor do
+  @moduledoc """
+  A supervisor for monitoring the  components needed for processing a given
+  telemetry package.
+  """
+
   use Supervisor
 
   import TrueAnomaly.Utils.RegistryUtils

@@ -1,4 +1,9 @@
 defmodule TrueAnomaly.Utils.RegistryUtils do
+  @moduledoc """
+  Convenience functions to standardize naming of components and construct
+  the `:via` tuples needed for registration.
+  """
+
   alias TrueAnomaly.Files.File
 
   @spec name_for(atom()) :: atom()

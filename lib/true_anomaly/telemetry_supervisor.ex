@@ -1,4 +1,9 @@
 defmodule TrueAnomaly.TelemetrySupervisor do
+  @moduledoc """
+  The parent supervisor for all components involved in parsing
+  telemetry data files.
+  """
+
   use Supervisor
 
   import TrueAnomaly.Utils.RegistryUtils

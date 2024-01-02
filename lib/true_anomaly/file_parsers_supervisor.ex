@@ -1,4 +1,9 @@
 defmodule TrueAnomaly.FileParsersSupervisor do
+  @moduledoc """
+  A dynamic supervisor with functionality for adding and removing file parsing
+  components on demand.
+  """
+
   use DynamicSupervisor
 
   import TrueAnomaly.Utils.RegistryUtils

@@ -1,4 +1,9 @@
 defmodule TrueAnomaly.Normalizer do
+  @moduledoc """
+  The entrypoint for all data normalization.  Based on the satellite type,
+  normalization is delegated to a specific module.
+  """
+
   @spec normalize(map(), atom()) :: {:ok, map()} | {:error, any()}
   def normalize(%{} = data, satellite_type) when is_atom(satellite_type) do
     module_for(satellite_type).normalize(data)

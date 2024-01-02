@@ -1,4 +1,15 @@
 defmodule TrueAnomaly.DataPersister do
+  @moduledoc """
+  This module is responsible for retrieving normalized data from the Data
+  Staging agent, validating it, persisting it, and reporting the results
+  back to the Data Staging agent.
+
+  Once all data has been persisted, statistics are compiled and added
+  to the file's database record, the telemetry file is deleted from the
+  `files/ingest` directory, and the components for processing the
+  telemetry package are terminated.
+  """
+
   use GenServer
 
   import TrueAnomaly.Utils.RegistryUtils

@@ -1,4 +1,9 @@
 defmodule TrueAnomaly.FileSystemWatcher do
+  @moduledoc """
+  Monitors the `files/ingest` folder for new files. When one appears,
+  it notifies the `FileParsersSupervisor` to create the components needed
+  for processing the file.
+  """
   use GenServer
 
   require Logger

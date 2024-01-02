@@ -1,4 +1,11 @@
 defmodule TrueAnomaly.DataStagingAgent do
+  @moduledoc """
+  An agent for storing normalized telemetry data and recording the status of
+  each line as it progresses through the system.
+
+  Includes utility functions for sorting, compiling statistics, etc.
+  """
+
   use Agent
 
   import TrueAnomaly.Utils.RegistryUtils

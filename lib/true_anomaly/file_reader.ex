@@ -1,4 +1,11 @@
 defmodule TrueAnomaly.FileReader do
+  @moduledoc """
+  Reads the given telemetry file, identifying the satellite type from a header
+  row, then asynchronously reading and normalizing the remaining lines in the
+  file.  The normalized data is sent to the data staging agent for future
+  processing.
+  """
+
   use GenServer
 
   import TrueAnomaly.Utils.RegistryUtils
