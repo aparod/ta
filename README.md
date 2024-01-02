@@ -26,7 +26,7 @@ I hope that the design of this system demonstrates my knowledge of Supervisors, 
 
 * I had intended to persist the telemetry records using batch inserts, but an unresolved bug in the `polymorphic_embed` library required me to issue individual insert commands instead.
 
-* The system is capable of handling bad input (invalid JSON, incorrect/missing keys, etc.) without crashing. Statistics about the data import are stored on the `File` record in the database.  Feel free to cause problems in one of the provided telemetry files and see for yourself.
+* Aside from the header row, which must be present and reference a known satellite type, the system is capable of handling bad input (invalid JSON, incorrect/missing keys, etc.) in telemetry files without crashing. Statistics about the data import are stored on the `File` record in the database.  Feel free to create chaos in one of the provided telemetry files and see for yourself.
 
 * Errors that are encountered are currently sent to the `Logger`, but a more robust system using Elixir's Telemetry Hex package would ideally be used instead to enable fine-tuning of system events.
 
