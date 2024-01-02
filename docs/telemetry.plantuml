@@ -2,29 +2,33 @@
 
 component "Telemetry Supervisor\n(Supervisor)" as ts
 component "File System Watcher\n(GenServer)" as fsw
-component "Dynamic Parsers Supervisor\n(Dynamic Supervisor)" as ds1
+component "Component Registry\n(Registry)" as reg
+component "File Parsers Supervisor\n(Dynamic Supervisor)" as ds1
 
-component "File Parser\n(Supervisor)" as fpsa
-component "..." as fpsc
+component "File Parser 1\n(Supervisor)" as fp1
+component "File Parser 2\n(Supervisor)" as fp2
+component "File Parser ...\n(Supervisor)" as fp3
 
 component "File Reader\n(GenServer)" as fr
-component "Data Normalizer\n(GenServer)" as dn
+component "Data Staging\n(Agent)" as nd
 component "Data Persister\n(GenServer)" as dp
 
 database "Database" as db
 
+ts -down-> reg
 ts -down-> fsw
 ts -down-> ds1
 
-ds1 -down-> fpsa
-ds1 -down-> fpsc
+ds1 -down-> fp1
+ds1 -down-> fp2
+ds1 -down-> fp3
 
-fpsa -down-> fr
-fpsa -down-> dn
-fpsa -down-> dp
+fp1 -down-> fr
+fp1 -down-> nd
+fp1 -down-> dp
 
-fr -right-> dn
-dn -right-> dp
+fr -right-> nd
+dp <-left-> nd
 dp -down-> db
 
 @enduml

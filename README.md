@@ -1,50 +1,39 @@
-# TrueAnomaly Telemetry Package Processing
+# TrueAnomaly Telemetry Package Processor
 
 ![UML Diagram](docs/telemetry.svg)
 
 The **Telemetry Supervisor** is the parent supervisor of all the telemetry-processing components.
 
-The **File System Watcher** monitors the `files/ingest` directory for new telemetry packages. When one appears, it notifies the **Dynamic Parsers Supervisor** so that file processing components can be started up.
+The **Component Registry** serves as a centralized location for components to register themselves and find other components. The `RegistryUtils` module aids this process by standardizing the naming of components and constructing the `:via` tuples needed for registration.
+
+The **File System Watcher** monitors the `files/ingest` directory for new telemetry packages. When one appears, it notifies the **File Parsers Supervisor** so that file processing components can be started up.
 
 The **File Parser** component is created on a per-file basis and supervises the three components needed for processing the given telemetry file.
 
-The **File Reader** component reads the file header to determine the satellite type and then reads the rest of the file into memory so the data can be distributed to the **Data Normalizer** worker(s).
+The **File Reader** component reads the file header to determine the satellite type and then asynchronously reads the rest of the file, normalizes the data (including any satellite-type-specific details), and sends it to the **Data Staging** agent. Once the entire file has been read, it notifies the **Data Persister** to begin working.
 
-The **Data Normalizer** component reads the raw data from the file and, based on the satellite type, normalizes the data, including any satellite-type-specific details that need to be stored.
+The **Data Staging** agent is responsible for storing the normalized telemetry data and updating the status of each line as it is processed. It also provides statistics around the total lines in the package, the number of imported lines, and how many errors were encountered.
 
-The **Data Persister** component enqueues normalized telemetry data to be persisted to the database. Its function is to validate the data and space out inserts so as not to degrade database performance.
+The **Data Persister** component requests data from the **Data Staging** agent, validates it, persists it to the database, and then informs the **Data Staging** agent of the result. It also serves to space out inserts so as not to degrade database performance. Once all data has been persisted, it updates the telemetry package's database record with statistics, deletes the file from the `files/ingest` directory, and terminates all the processes relating to the handling of that specific file.
 
 ## System design rationale
 
-I designed the system the way I did in order that the various stages of processing the telemetry data file could potentially be scaled independently, but also to demonstrate my knowledge of Supervisors, GenServers, inter-process messaging, etc. Depending on the size of the telemetry files, however, this approach may be overkill.
+I designed the system in order to support handling of large telemetry files while not overwhelming the database with writes. The system can be easily configured to adjust throughput as needed, and could be modified to read its settings from a database or a Redis instance, for example.
 
-A simpler approach could be to make use of Elixir's excellent concurrency capabilities to stream the file line-by-line and spin up asynchronous processes that would handle the normalization and persistence of the data.
+I hope that the design of this system demonstrates my knowledge of Supervisors, GenServers, Agents, Behaviours, Callbacks, inter-process messaging, and so on. 
 
 ## Notes
 
-* The Data Normalizer and Data Persister components are intended to be pools of workers that could scale as necessary for extremely large telemetry packages.
+* I had intended to persist the telemetry records using batch inserts, but an unresolved bug in the `polymorphic_embed` library required me to issue individual insert commands instead.
 
-* I intended to persist the records using batch inserts, but an unresolved bug in the `polymorphic_embed` library required that I issue individual SQL commands instead.
+* The system is capable of handling bad input (invalid JSON, incorrect/missing keys, etc.) without crashing. Statistics about the data import are stored on the `File` record in the database.  Feel free to cause problems in one of the provided telemetry files and see for yourself.
 
-* When a file's telemetry data has finished being persisted, the components that were created for it are intended to be terminated, but that logic has not been built yet.
-
-* There is some logging that happens if telemetry data fails validation, but a more robust system using Elixir's Telemetry Hex library (coincidentally and confusingly named the same), should be used instead to enable fine-tuning of system events.
-
-* A `Registry` could have been used to help components find one another, rather than hand-crafting process names based on the component and file ID as I did.
+* Errors that are encountered are currently sent to the `Logger`, but a more robust system using Elixir's Telemetry Hex package would ideally be used instead to enable fine-tuning of system events.
 
 * I hope it is understood that I would have added many tests were this a real system.
 
-## Files of interest
-
-There's not a lot of code, but the most interesting files are probably:
-
-* `lib/true_anomaly/telemetry/telemetry.ex`
-* `lib/true_anomaly/instruments/*.ex`
-* `lib/true_anomaly/data_normalizer.ex`
-* `lib/true_anomaly/data_persister.ex`
-
 ## Running the system
 
-If you wish to see the system run, it is functional and nothing beyond the standard Elixir/Phoenix setup steps is required.
+If you wish to see the system run, it is functional and requires nothing beyond the standard Elixir/Phoenix setup steps.
 
-Once the app is running, simply copy one (or both!) of the files from the `/files` directory into the `/files/ingest` directory. The workers will see them and begin processing.
+Once the app is running (via `iex -S mix`), simply copy one (or both!) of the files from the `/files` directory into the `/files/ingest` directory. The **File System Watcher** will see them and kick off processing of the files.
