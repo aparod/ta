@@ -33,7 +33,7 @@ defmodule TrueAnomaly.FileSystemWatcher do
 
     state =
       Enum.reduce(filenames, state, fn filename, acc ->
-        if MapSet.member?(state, filename) do
+        if MapSet.member?(acc, filename) do
           # We've already seen and started processing the file. Ignore it.
           acc
         else
@@ -41,7 +41,8 @@ defmodule TrueAnomaly.FileSystemWatcher do
           case Files.create(%{name: filename}) do
             {:ok, file} ->
               TrueAnomaly.FileParsersSupervisor.add_file_parser(file)
-              MapSet.put(state, filename)
+
+              MapSet.put(acc, filename)
 
             {:error, reason} ->
               Logger.error("[FilesystemWatcher] #{inspect(reason)}")
